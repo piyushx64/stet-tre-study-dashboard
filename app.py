@@ -1,11 +1,21 @@
-import os, json, sqlite3, hmac
+import os, json, hmac
 from pathlib import Path
 from flask import Flask, request, session, redirect, url_for, jsonify, render_template_string, send_from_directory
 from authlib.integrations.flask_client import OAuth
 from werkzeug.middleware.proxy_fix import ProxyFix
+from sqlalchemy import create_engine, text
 
 BASE = Path(__file__).resolve().parent
-DB_PATH = Path(os.environ.get("DATABASE_PATH", BASE / "study_dashboard.sqlite3"))
+DATABASE_URL = os.environ.get("DATABASE_URL", "").strip()
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+psycopg://", 1)
+elif DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg://", 1)
+if DATABASE_URL:
+    engine = create_engine(DATABASE_URL, pool_pre_ping=True, pool_recycle=300)
+else:
+    DB_PATH = Path(os.environ.get("DATABASE_PATH", BASE / "study_dashboard.sqlite3"))
+    engine = create_engine("sqlite:///" + str(DB_PATH), connect_args={"check_same_thread": False})
 app = Flask(__name__, static_folder=None)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 app.secret_key = os.environ.get("SECRET_KEY") or "local-development-only-change-me"
@@ -17,11 +27,20 @@ oauth = OAuth(app)
 if GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET:
     oauth.register(name="google", client_id=GOOGLE_CLIENT_ID, client_secret=GOOGLE_CLIENT_SECRET, server_metadata_url="https://accounts.google.com/.well-known/openid-configuration", client_kwargs={"scope": "openid email profile"})
 
-def db():
-    conn = sqlite3.connect(DB_PATH)
-    conn.execute("CREATE TABLE IF NOT EXISTS dashboard_state (id INTEGER PRIMARY KEY CHECK (id=1), payload TEXT NOT NULL)")
-    conn.commit()
-    return conn
+def init_db():
+    with engine.begin() as conn:
+        conn.execute(text("""
+            CREATE TABLE IF NOT EXISTS dashboard_state (
+                user_id VARCHAR(320) PRIMARY KEY,
+                payload TEXT NOT NULL,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """))
+
+init_db()
+
+def current_user_id():
+    return str(session.get("user_email") or "legacy-password-user").strip().lower()
 
 LOGIN = """<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b1220"><title>Sign in · STET + TRE Study Dashboard</title>
@@ -91,18 +110,21 @@ def home():
 def state_api():
     if not session.get("authenticated"):
         return jsonify({"error": "Authentication required"}), 401
-    conn = db()
+    user_id = current_user_id()
     if request.method == "GET":
-        row = conn.execute("SELECT payload FROM dashboard_state WHERE id=1").fetchone()
-        conn.close()
+        with engine.begin() as conn:
+            row = conn.execute(text("SELECT payload FROM dashboard_state WHERE user_id = :user_id"), {"user_id": user_id}).fetchone()
         return jsonify(json.loads(row[0]) if row else {})
     payload = request.get_json(silent=True)
     if not isinstance(payload, dict):
-        conn.close()
         return jsonify({"error": "Expected JSON object"}), 400
-    conn.execute("INSERT INTO dashboard_state(id,payload) VALUES(1,?) ON CONFLICT(id) DO UPDATE SET payload=excluded.payload", (json.dumps(payload),))
-    conn.commit()
-    conn.close()
+    payload_text = json.dumps(payload)
+    with engine.begin() as conn:
+        conn.execute(text("""
+            INSERT INTO dashboard_state (user_id, payload, updated_at)
+            VALUES (:user_id, :payload, CURRENT_TIMESTAMP)
+            ON CONFLICT (user_id) DO UPDATE SET payload = :payload, updated_at = CURRENT_TIMESTAMP
+        """), {"user_id": user_id, "payload": payload_text})
     return jsonify({"ok": True})
 
 @app.get("/health")
