@@ -77,6 +77,27 @@
   .tab{padding:9px 11px}
 }
 
+
+/* Refined Android-style mobile shell. Desktop rules above remain untouched. */
+.app-bottom-nav{display:none}
+@media(max-width:640px){
+  body{padding-bottom:calc(74px + env(safe-area-inset-bottom))}
+  .wrap{padding-top:10px}
+  .top{position:sticky;top:0;z-index:40;background:#f4f7fcf2;padding:9px 2px 11px;margin:0 -2px 14px;backdrop-filter:blur(16px);border-bottom:1px solid #e1e8f380}
+  .tabs{position:static;z-index:auto;left:auto;right:auto;bottom:auto;margin:12px 0 16px;padding:2px 0 7px;display:flex;flex-wrap:nowrap;gap:7px;overflow-x:auto;background:transparent;border:0;box-shadow:none;backdrop-filter:none;scrollbar-width:none}
+  .tabs .tab{display:none;flex:0 0 auto;white-space:nowrap;padding:9px 13px;min-height:38px;border-radius:11px;background:#fff;font-size:12px}
+  .tabs.mobile-more-open .tab{display:block}
+  .tabs.mobile-more-open .tab.active{background:#edf2ff}
+  .tabs.mobile-more-open{flex-wrap:wrap;overflow:visible;padding:8px;background:#fff;border:1px solid var(--line);border-radius:16px}
+  .app-bottom-nav{position:fixed;z-index:60;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px;padding:7px 8px calc(7px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid #e3e9f3;box-shadow:0 -5px 22px #14213d12}
+  .app-nav-item{appearance:none;border:0;background:transparent;color:#71809a;min-width:0;min-height:52px;padding:5px 2px 3px;border-radius:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10px;font-weight:700;line-height:1.2}
+  .app-nav-item svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .app-nav-item.active{color:#2453e8;background:#edf2ff}
+  .app-nav-item.active svg{stroke-width:2.2}
+  .app-nav-item:active{transform:scale(.97)}
+  .section.active{scroll-margin-top:82px}
+}
+
 </style></head>
 <body><main class="wrap">
 <header class="top"><div class="brand"><div class="logo" aria-label="PrepPath logo"><svg viewBox="0 0 64 64" role="img" aria-hidden="true"><path d="M8 14q12-5 24 5v34Q20 43 8 49zM56 14q-12-5-24 5v34q12-9 24-4z" fill="none" stroke="white" stroke-width="4" stroke-linejoin="round"/><path d="m25 32 5 5 10-12" fill="none" stroke="#a9f3d0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="brandtag">EXAM PREP WORKSPACE</div><h1>PrepPath</h1><div class="sub">Bihar STET &amp; BPSC TRE · Computer Science</div></div></div><div class="actions"><button class="btn" id="exportBtn">Export progress</button><button class="btn" id="resetBtn">Reset progress</button><form method="post" action="/logout" style="margin:0"><button class="btn" type="submit" style="border-color:#f0c7ce;color:#a52b43;background:#fff7f8">Log out</button></form></div></header>
@@ -99,7 +120,15 @@
 <section class="section" id="revision"><div class="panel"><h3>Spaced-revision planner</h3><p class="sub">When you mark a syllabus subtopic revised, it appears here for follow-up after 1, 3, 7 and 14 days. Tick each review when completed.</p><div id="revisionList" class="itemlist"></div><div class="notice">This planner uses the date you first tick a syllabus item. If your existing checkboxes were ticked before this feature was added, untick and retick them to start a revision schedule.</div></div></section>
 <section class="section" id="notes"><div class="panel"><h3>Notes, formulas & flashcards</h3><p class="sub">Save short notes, formulas, commands, definitions and quick-recall cards.</p><div class="rowfields"><div><label class="fieldlabel" for="noteTitle">Title / topic</label><input class="field" id="noteTitle" placeholder="e.g. CPU scheduling formulas"></div><div><label class="fieldlabel" for="noteKind">Type</label><select class="field" id="noteKind"><option>Quick note</option><option>Formula</option><option>Flashcard</option><option>SQL snippet</option></select></div></div><label class="fieldlabel" for="noteContent">Content / answer</label><textarea class="field" id="noteContent" placeholder="Write the concept, formula, example, or flashcard answer..."></textarea><button class="btn primary" id="addNote">Save note</button><div id="notesList" class="itemlist"></div></div></section>
 <section class="section" id="settings"><div class="layout"><div class="panel"><h3>Study plan settings</h3><p class="sub">Adjust your available time and focus your suggested plan.</p><label class="fieldlabel" for="availableHours">Hours available per day</label><input class="field" id="availableHours" type="number" min="1" max="16" value="6"><label class="fieldlabel" for="weakSubject">Priority / weakest subject</label><select class="field" id="weakSubject"><option>Data structures & algorithms</option><option>Programming</option><option>DBMS and SQL</option><option>Operating systems</option><option>Computer networks</option><option>Digital logic</option><option>Theory of computation</option><option>Teaching and assessment</option><option>GK / reasoning / maths</option></select><button class="btn primary" id="savePlanSettings">Save and build today's plan</button><div id="adaptivePlan" class="itemlist"></div><div class="notice">The plan is a suggested schedule, not an official exam timetable.</div></div><div class="panel"><h3>Exam countdowns</h3><p class="sub">Enter dates only when confirmed by an official notice. No unannounced date is assumed.</p><label class="fieldlabel" for="stetDate">STET exam date</label><input class="field" id="stetDate" type="date" class="field"><label class="fieldlabel" for="treDate">BPSC TRE exam date</label><input class="field" id="treDate" type="date" class="field"><button class="btn primary" id="saveExamDates">Save exam dates</button><div id="countdownList" class="itemlist"></div></div></div><div class="panel" style="margin-top:16px"><h3>Backup and data</h3><p class="sub">Export a JSON backup or import a previous backup. Cloud sync requires the deployed server API and database environment to be configured.</p><div class="actions"><button class="btn" id="backupExport">Export full backup</button><label class="btn" for="backupImport" style="display:inline-flex;align-items:center">Import backup</label><input id="backupImport" type="file" accept="application/json" hidden></div><p id="cloudStatus" class="small">Checking cloud sync…</p></div></section>
-<div class="footer"><strong>PrepPath</strong> · Built for focused preparation · Progress is saved to your signed-in account when cloud sync is configured; export backups regularly.</div></main>
+<div class="footer"><strong>PrepPath</strong> · Built for focused preparation · Progress is saved to your signed-in account when cloud sync is configured; export backups regularly.</div>
+<nav class="app-bottom-nav" aria-label="Main app navigation">
+<button class="app-nav-item active" type="button" data-app-tab="today" aria-label="Today"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="16" rx="3"/><path d="M8 2.8v3.5M16 2.8v3.5M3.5 9.5h17M8 13h3M8 16.5h7"/></svg><span>Today</span></button>
+<button class="app-nav-item" type="button" data-app-tab="checklist" aria-label="Study plan"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5h11M9 12h11M9 19h11"/><path d="m3 5 1.5 1.5L7 4M3 12l1.5 1.5L7 11M3 19l1.5 1.5L7 18"/></svg><span>Study plan</span></button>
+<button class="app-nav-item" type="button" data-app-tab="mocks" aria-label="Practice"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2.5"/><path d="M8 8h8M8 12h2M14 12h2M8 16h2M14 16h2"/></svg><span>Practice</span></button>
+<button class="app-nav-item" type="button" data-app-more="true" aria-expanded="false" aria-label="More sections"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg><span>More</span></button>
+</nav>
+
+</main>
 <script>
 const KEY='stetTreDashboardV2';
 const topics=[
@@ -307,4 +336,31 @@ $('pauseBreak').onclick=()=>{clearInterval(breakInterval);breakInterval=null};
 $('resetBreak').onclick=()=>{clearInterval(breakInterval);breakInterval=null;breakRemaining=Math.max(1,Math.min(90,Number($('breakMinutes').value)||20))*60;showBreakClock()};
 $('breakMinutes').onchange=()=>{if(!breakInterval){breakRemaining=Math.max(1,Math.min(90,Number($('breakMinutes').value)||20))*60;showBreakClock()}};
 showBreakClock();renderStetMockCards();renderAll();showClock();initCloudSync();
+
+/* Native-feeling mobile navigation, layered over the existing desktop tabs. */
+document.querySelectorAll('[data-app-tab]').forEach(btn=>btn.addEventListener('click',()=>{
+  const target=btn.dataset.appTab;
+  const existing=document.querySelector('.tabs [data-tab="'+target+'"]');
+  if(existing) existing.click();
+  document.querySelectorAll('.app-nav-item').forEach(item=>item.classList.toggle('active',item===btn));
+  document.querySelector('.tabs')?.classList.remove('mobile-more-open');
+  const more=document.querySelector('[data-app-more]');
+  if(more) more.setAttribute('aria-expanded','false');
+  window.scrollTo({top:0,behavior:'smooth'});
+}));
+document.querySelector('[data-app-more]')?.addEventListener('click',()=>{
+  const tabs=document.querySelector('.tabs');
+  const opened=tabs.classList.toggle('mobile-more-open');
+  document.querySelector('[data-app-more]').setAttribute('aria-expanded',String(opened));
+  document.querySelectorAll('.app-nav-item').forEach(item=>item.classList.toggle('active',item.hasAttribute('data-app-more')&&opened));
+  if(opened) tabs.scrollIntoView({behavior:'smooth',block:'nearest'});
+});
+document.querySelectorAll('.tabs [data-tab]').forEach(tab=>tab.addEventListener('click',()=>{
+  document.querySelectorAll('.app-nav-item').forEach(item=>item.classList.toggle('active',item.dataset.appTab===tab.dataset.tab));
+  if(!['today','checklist','mocks'].includes(tab.dataset.tab)){
+    document.querySelectorAll('.app-nav-item').forEach(item=>item.classList.remove('active'));
+    document.querySelector('[data-app-more]')?.classList.add('active');
+  }
+}));
+
 </script></body></html>
