@@ -725,4 +725,50 @@ function renderSubjectLibrary(){
 document.getElementById('librarySearch')?.addEventListener('input',renderSubjectLibrary);
 renderSubjectLibrary();
 
-</script></body></html>
+</script><script>
+/* Independent navigation safety net: keeps section buttons working even if another feature script errors. */
+(function(){
+  function activateTab(tab){
+    if(!tab) return;
+    var id=tab.getAttribute('data-tab');
+    var section=document.getElementById(id);
+    if(!section) return;
+    document.querySelectorAll('.tabs .tab').forEach(function(b){b.classList.toggle('active',b===tab);});
+    document.querySelectorAll('main .section').forEach(function(s){s.classList.toggle('active',s.id===id);});
+    document.body.classList.remove('mobile-launcher-mode');
+    document.querySelector('.tabs')?.classList.remove('mobile-more-open');
+    var nav=document.querySelector('.app-bottom-nav');
+    if(nav){
+      nav.querySelectorAll('.app-nav-item').forEach(function(item){
+        var key=item.getAttribute('data-app-tab');
+        item.classList.toggle('active',key===id);
+      });
+      if(!['today','checklist','mocks'].includes(id)){
+        nav.querySelectorAll('.app-nav-item').forEach(function(item){item.classList.remove('active');});
+        nav.querySelector('[data-app-more]')?.classList.add('active');
+      }
+      nav.querySelector('[data-app-more]')?.setAttribute('aria-expanded','false');
+    }
+    section.scrollIntoView({behavior:'auto',block:'start'});
+  }
+  document.addEventListener('click',function(event){
+    var tab=event.target.closest('.tabs .tab[data-tab]');
+    if(tab){event.preventDefault();activateTab(tab);return;}
+    var launch=event.target.closest('[data-launch-tab]');
+    if(launch){
+      event.preventDefault();
+      var target=launch.getAttribute('data-launch-tab');
+      var destination=document.querySelector('.tabs .tab[data-tab="'+target+'"]');
+      if(destination) activateTab(destination);
+      return;
+    }
+    var navItem=event.target.closest('[data-app-tab]');
+    if(navItem){
+      var navTarget=navItem.getAttribute('data-app-tab');
+      var navTab=document.querySelector('.tabs .tab[data-tab="'+navTarget+'"]');
+      if(navTab){event.preventDefault();activateTab(navTab);}
+    }
+  },true);
+})();
+</script>
+</body></html>
