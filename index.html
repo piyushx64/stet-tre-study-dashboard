@@ -98,9 +98,80 @@
   .section.active{scroll-margin-top:82px}
 }
 
+
+/* Mobile launcher home: isolated to phone widths; desktop UI is unchanged. */
+.mobile-launcher{display:none}
+@media(max-width:640px){
+  .mobile-launcher{display:block;margin:4px 0 16px}
+  .mobile-welcome{padding:19px 17px;border-radius:22px;background:linear-gradient(135deg,#2446b9,#4169f5);color:#fff;box-shadow:0 10px 24px #315df21e}
+  .mobile-welcome .mw-kicker{font-size:10px;letter-spacing:1.3px;font-weight:850;text-transform:uppercase;color:#dbe5ff}
+  .mobile-welcome h2{font-size:25px;line-height:1.18;letter-spacing:-.6px;margin:7px 0 7px}
+  .mobile-welcome p{font-size:12px;color:#edf2ff;margin:0;line-height:1.5}
+  .mobile-quick-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
+  .mobile-quick-stat{background:#ffffff18;border:1px solid #ffffff35;border-radius:13px;padding:10px 8px;min-width:0}
+  .mobile-quick-stat strong{display:block;font-size:19px;line-height:1.2}
+  .mobile-quick-stat span{display:block;font-size:10px;margin-top:4px;color:#e4eaff;line-height:1.25}
+  .mobile-launch-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:19px 2px 10px}
+  .mobile-launch-heading h3{font-size:16px;margin:0;letter-spacing:-.2px}
+  .mobile-launch-heading span{font-size:11px;color:var(--muted)}
+  .mobile-feature-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .mobile-feature{appearance:none;text-align:left;width:100%;min-width:0;min-height:128px;padding:13px;border:1px solid #e3e9f4;border-radius:17px;background:#fff;box-shadow:0 3px 12px #20345b08;color:var(--ink);display:flex;flex-direction:column;align-items:flex-start;gap:8px;transition:transform .12s,border-color .12s}
+  .mobile-feature:active{transform:scale(.98)}
+  .mobile-feature .mf-icon{width:43px;height:43px;display:grid;place-items:center;border-radius:14px;flex:0 0 auto}
+  .mobile-feature .mf-icon svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .mobile-feature .mf-title{font-size:13px;font-weight:800;line-height:1.25}
+  .mobile-feature .mf-desc{font-size:10px;line-height:1.4;color:var(--muted)}
+  .mobile-feature .mf-arrow{display:none}
+  .mf-blue{background:#eaf0ff;color:#315df2}.mf-green{background:#e5f7ec;color:#16834a}.mf-orange{background:#fff1dc;color:#b66a00}.mf-purple{background:#f0e9ff;color:#7543c8}.mf-pink{background:#ffeaf0;color:#c13b61}.mf-teal{background:#e1f7f7;color:#087d83}
+  .mobile-resume{display:flex;align-items:center;gap:12px;margin-top:12px;padding:13px;border:1px solid #dce5fa;border-radius:16px;background:#f1f5ff;color:var(--ink);width:100%;text-align:left}
+  .mobile-resume .mr-icon{width:40px;height:40px;flex:0 0 40px;border-radius:12px;background:#315df2;color:white;display:grid;place-items:center}
+  .mobile-resume .mr-icon svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .mobile-resume strong{display:block;font-size:13px}
+  .mobile-resume small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+  .mobile-launcher[hidden]{display:none!important}
+  .mobile-launcher~.hero{margin-top:0}
+  .mobile-launcher-mode .hero,.mobile-launcher-mode .tabs,.mobile-launcher-mode #today,.mobile-launcher-mode #checklist,.mobile-launcher-mode #timetable,.mobile-launcher-mode #roadmap,.mobile-launcher-mode #syllabus,.mobile-launcher-mode #games,.mobile-launcher-mode #mistakes,.mobile-launcher-mode #mocks,.mobile-launcher-mode #studylog,.mobile-launcher-mode #quiz,.mobile-launcher-mode #revision,.mobile-launcher-mode #notes,.mobile-launcher-mode #settings{display:none!important}
+  .mobile-launcher-mode .mobile-launcher{display:block}
+  .app-bottom-nav .app-nav-item[data-app-home]{display:flex}
+}
+@media(max-width:360px){
+  .mobile-feature{padding:11px;min-height:122px}
+  .mobile-feature .mf-icon{width:39px;height:39px}
+  .mobile-welcome h2{font-size:23px}
+}
+
 </style></head>
 <body><main class="wrap">
 <header class="top"><div class="brand"><div class="logo" aria-label="PrepPath logo"><svg viewBox="0 0 64 64" role="img" aria-hidden="true"><path d="M8 14q12-5 24 5v34Q20 43 8 49zM56 14q-12-5-24 5v34q12-9 24-4z" fill="none" stroke="white" stroke-width="4" stroke-linejoin="round"/><path d="m25 32 5 5 10-12" fill="none" stroke="#a9f3d0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="brandtag">EXAM PREP WORKSPACE</div><h1>PrepPath</h1><div class="sub">Bihar STET &amp; BPSC TRE · Computer Science</div></div></div><div class="actions"><button class="btn" id="exportBtn">Export progress</button><button class="btn" id="resetBtn">Reset progress</button><form method="post" action="/logout" style="margin:0"><button class="btn" type="submit" style="border-color:#f0c7ce;color:#a52b43;background:#fff7f8">Log out</button></form></div></header>
+
+<section class="mobile-launcher" id="mobileLauncher" aria-label="PrepPath home">
+  <div class="mobile-welcome">
+    <div class="mw-kicker">Your learning space</div>
+    <h2>What will you study today?</h2>
+    <p>Build your STET &amp; BPSC TRE preparation one focused session at a time.</p>
+    <div class="mobile-quick-stats">
+      <div class="mobile-quick-stat"><strong id="mobileTasksDone">0</strong><span>Tasks done</span></div>
+      <div class="mobile-quick-stat"><strong id="mobileStudyDays">1</strong><span>Study days</span></div>
+      <div class="mobile-quick-stat"><strong id="mobileProgress">0%</strong><span>Progress</span></div>
+    </div>
+  </div>
+  <div class="mobile-launch-heading"><h3>Your study tools</h3><span>Tap to open</span></div>
+  <div class="mobile-feature-grid">
+    <button class="mobile-feature" type="button" data-launch-tab="today"><span class="mf-icon mf-blue"><svg viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="16" rx="3"/><path d="M8 2.8v3.5M16 2.8v3.5M3.5 9.5h17M8 13h3M8 16.5h7"/></svg></span><span class="mf-title">Today's study</span><span class="mf-desc">Tasks, focus timer and daily goals</span></button>
+    <button class="mobile-feature" type="button" data-launch-tab="checklist"><span class="mf-icon mf-green"><svg viewBox="0 0 24 24"><path d="M9 5h11M9 12h11M9 19h11"/><path d="m3 5 1.5 1.5L7 4M3 12l1.5 1.5L7 11M3 19l1.5 1.5L7 18"/></svg></span><span class="mf-title">Study planner</span><span class="mf-desc">25-day plan and daily timetable</span></button>
+    <button class="mobile-feature" type="button" data-launch-tab="syllabus"><span class="mf-icon mf-orange"><svg viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 1 4 17.5z"/><path d="M4 17.5A2.5 2.5 0 0 1 6.5 15H20M8 6h8M8 9h7"/></svg></span><span class="mf-title">Syllabus tracker</span><span class="mf-desc">Topics and completion checklist</span></button>
+    <button class="mobile-feature" type="button" data-launch-tab="mocks"><span class="mf-icon mf-purple"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2.5"/><path d="M8 8h8M8 12h2M14 12h2M8 16h2M14 16h2"/></svg></span><span class="mf-title">Mock tests</span><span class="mf-desc">Timed practice and score review</span></button>
+    <button class="mobile-feature" type="button" data-launch-tab="quiz"><span class="mf-icon mf-teal"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.6 2.6 0 1 1 4.3 2c-1.1.9-1.8 1.2-1.8 2.5M12 17h.01"/></svg></span><span class="mf-title">MCQ practice</span><span class="mf-desc">Test concepts and learn from answers</span></button>
+    <button class="mobile-feature" type="button" data-launch-tab="studylog"><span class="mf-icon mf-pink"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 6-7"/></svg></span><span class="mf-title">Progress analytics</span><span class="mf-desc">Study hours and weak subjects</span></button>
+    <button class="mobile-feature" type="button" data-launch-tab="revision"><span class="mf-icon mf-blue"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.8-4L3 10"/><path d="M3 4v6h6M4 13a8 8 0 0 0 14.8 4L21 14"/><path d="M21 20v-6h-6"/></svg></span><span class="mf-title">Revision planner</span><span class="mf-desc">Review topics and plan revision</span></button>
+    <button class="mobile-feature" type="button" data-launch-tab="notes"><span class="mf-icon mf-green"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/></svg></span><span class="mf-title">Notes &amp; formulas</span><span class="mf-desc">Save notes and important concepts</span></button>
+    <button class="mobile-feature" type="button" data-launch-tab="mistakes"><span class="mf-icon mf-orange"><svg viewBox="0 0 24 24"><path d="m12 3 10 18H2z"/><path d="M12 9v5M12 17h.01"/></svg></span><span class="mf-title">Mistake notebook</span><span class="mf-desc">Track errors and revisit concepts</span></button>
+    <button class="mobile-feature" type="button" data-launch-tab="settings"><span class="mf-icon mf-purple"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.7-1.4-2.4 1.4-1.1a7 7 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.7 1l1.7-.7 1.4 2.4-1.4 1.1a7 7 0 0 1 0 2z"/></svg></span><span class="mf-title">Settings &amp; backup</span><span class="mf-desc">Exam dates and data backup</span></button>
+    <button class="mobile-feature" type="button" data-launch-tab="games"><span class="mf-icon mf-pink"><svg viewBox="0 0 24 24"><path d="M6 12h4m-2-2v4M15 11h.01M18 13h.01"/><path d="M6.5 6h11a4 4 0 0 1 3.8 5.2l-1.2 4a2.5 2.5 0 0 1-4.1 1.1L13 14h-2l-3 2.3a2.5 2.5 0 0 1-4.1-1.1l-1.2-4A4 4 0 0 1 6.5 6z"/></svg></span><span class="mf-title">Break &amp; games</span><span class="mf-desc">Take a timed break between sessions</span></button>
+  </div>
+  <button class="mobile-resume" type="button" data-launch-tab="today"><span class="mr-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span><strong>Continue studying</strong><small>Return to today's checklist and focus timer</small></span></button>
+</section>
+
 <section class="hero"><div><div class="eyebrow">Your study mission</div><h2>Small daily wins.<br>One exam at a time.</h2><p>Prioritise STET for the next 25 days. Build shared Computer Science knowledge now, then switch to TRE-specific preparation after STET.</p><div class="progressline"><span>Overall checklist progress</span><strong id="progressText">0%</strong></div><div class="track"><div class="fill" id="progressFill"></div></div></div><div class="stats"><div class="stat"><strong id="completedCount">0</strong><span>Tasks completed</span></div><div class="stat"><strong id="daysCount">1</strong><span>Study days logged</span></div><div class="stat"><strong>6h</strong><span>Daily target</span></div></div></section>
 <nav class="tabs" aria-label="Dashboard sections"><button class="tab active" data-tab="today">Today</button><button class="tab" data-tab="checklist">25-day checklist</button><button class="tab" data-tab="timetable">Daily timetable</button><button class="tab" data-tab="roadmap">TRE roadmap</button><button class="tab" data-tab="syllabus">Detailed syllabus</button><button class="tab" data-tab="games">Gaming corner</button><button class="tab" data-tab="mistakes">Mistake notebook</button><button class="tab" data-tab="mocks">Mock tests</button><button class="tab" data-tab="studylog">Study analytics</button><button class="tab" data-tab="quiz">MCQ practice</button><button class="tab" data-tab="revision">Revision planner</button><button class="tab" data-tab="notes">Notes & formulas</button><button class="tab" data-tab="settings">Settings & countdown</button></nav>
 <section class="section active" id="today"><div class="layout"><div class="panel"><div class="panelhead"><div><h3>Today's checklist</h3><div class="date" id="todayDate"></div></div><span class="pill">6-hour target</span></div><div id="todayTasks"></div></div><aside class="panel"><h3>Focus timer</h3><div class="sub">Use a 25-minute focus sprint or set your own study block.</div><div class="focusclock" id="clock">25:00</div><label class="fieldlabel" for="minutes">Minutes</label><input class="field" type="number" min="1" max="240" id="minutes" value="25"><div class="timerbuttons"><button class="btn primary" id="startTimer">Start</button><button class="btn" id="pauseTimer">Pause</button><button class="btn" id="resetTimer">Reset</button></div><div class="targets"><h3>Daily targets</h3><div class="target"><span>Computer Science concepts</span><strong>90 min</strong></div><div class="target"><span>CS MCQs</span><strong>60 min</strong></div><div class="target"><span>Teaching Art</span><strong>60 min</strong></div><div class="target"><span>GK / reasoning / maths</span><strong>60 min</strong></div><div class="target"><span>Timed test + revision</span><strong>90 min</strong></div></div></aside></div></section>
@@ -122,7 +193,8 @@
 <section class="section" id="settings"><div class="layout"><div class="panel"><h3>Study plan settings</h3><p class="sub">Adjust your available time and focus your suggested plan.</p><label class="fieldlabel" for="availableHours">Hours available per day</label><input class="field" id="availableHours" type="number" min="1" max="16" value="6"><label class="fieldlabel" for="weakSubject">Priority / weakest subject</label><select class="field" id="weakSubject"><option>Data structures & algorithms</option><option>Programming</option><option>DBMS and SQL</option><option>Operating systems</option><option>Computer networks</option><option>Digital logic</option><option>Theory of computation</option><option>Teaching and assessment</option><option>GK / reasoning / maths</option></select><button class="btn primary" id="savePlanSettings">Save and build today's plan</button><div id="adaptivePlan" class="itemlist"></div><div class="notice">The plan is a suggested schedule, not an official exam timetable.</div></div><div class="panel"><h3>Exam countdowns</h3><p class="sub">Enter dates only when confirmed by an official notice. No unannounced date is assumed.</p><label class="fieldlabel" for="stetDate">STET exam date</label><input class="field" id="stetDate" type="date" class="field"><label class="fieldlabel" for="treDate">BPSC TRE exam date</label><input class="field" id="treDate" type="date" class="field"><button class="btn primary" id="saveExamDates">Save exam dates</button><div id="countdownList" class="itemlist"></div></div></div><div class="panel" style="margin-top:16px"><h3>Backup and data</h3><p class="sub">Export a JSON backup or import a previous backup. Cloud sync requires the deployed server API and database environment to be configured.</p><div class="actions"><button class="btn" id="backupExport">Export full backup</button><label class="btn" for="backupImport" style="display:inline-flex;align-items:center">Import backup</label><input id="backupImport" type="file" accept="application/json" hidden></div><p id="cloudStatus" class="small">Checking cloud sync…</p></div></section>
 <div class="footer"><strong>PrepPath</strong> · Built for focused preparation · Progress is saved to your signed-in account when cloud sync is configured; export backups regularly.</div>
 <nav class="app-bottom-nav" aria-label="Main app navigation">
-<button class="app-nav-item active" type="button" data-app-tab="today" aria-label="Today"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="16" rx="3"/><path d="M8 2.8v3.5M16 2.8v3.5M3.5 9.5h17M8 13h3M8 16.5h7"/></svg><span>Today</span></button>
+<button class="app-nav-item active" type="button" data-app-home="true" aria-label="Home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5.5 9v11h13V9M9 20v-6h6v6"/></svg><span>Home</span></button>
+<button class="app-nav-item" type="button" data-app-tab="today" aria-label="Today"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="16" rx="3"/><path d="M8 2.8v3.5M16 2.8v3.5M3.5 9.5h17M8 13h3M8 16.5h7"/></svg><span>Today</span></button>
 <button class="app-nav-item" type="button" data-app-tab="checklist" aria-label="Study plan"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5h11M9 12h11M9 19h11"/><path d="m3 5 1.5 1.5L7 4M3 12l1.5 1.5L7 11M3 19l1.5 1.5L7 18"/></svg><span>Study plan</span></button>
 <button class="app-nav-item" type="button" data-app-tab="mocks" aria-label="Practice"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2.5"/><path d="M8 8h8M8 12h2M14 12h2M8 16h2M14 16h2"/></svg><span>Practice</span></button>
 <button class="app-nav-item" type="button" data-app-more="true" aria-expanded="false" aria-label="More sections"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg><span>More</span></button>
@@ -362,5 +434,55 @@ document.querySelectorAll('.tabs [data-tab]').forEach(tab=>tab.addEventListener(
     document.querySelector('[data-app-more]')?.classList.add('active');
   }
 }));
+
+
+/* Launcher navigation is mobile-only; feature tiles reuse existing section routing. */
+function showMobileLauncher(){
+  if(!window.matchMedia('(max-width:640px)').matches)return;
+  document.body.classList.add('mobile-launcher-mode');
+  document.querySelectorAll('.app-nav-item').forEach(item=>item.classList.toggle('active',item.hasAttribute('data-app-home')));
+  document.querySelector('.tabs')?.classList.remove('mobile-more-open');
+  const more=document.querySelector('[data-app-more]'); if(more)more.setAttribute('aria-expanded','false');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function openMobileFeature(target){
+  const tab=document.querySelector('.tabs [data-tab="'+target+'"]');
+  if(tab)tab.click();
+  document.body.classList.remove('mobile-launcher-mode');
+  document.querySelectorAll('.app-nav-item').forEach(item=>{
+    const key=item.dataset.appTab;
+    item.classList.toggle('active',key===target);
+  });
+  if(!['today','checklist','mocks'].includes(target)){
+    document.querySelectorAll('.app-nav-item').forEach(item=>item.classList.remove('active'));
+    document.querySelector('[data-app-more]')?.classList.add('active');
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('[data-launch-tab]').forEach(btn=>btn.addEventListener('click',()=>openMobileFeature(btn.dataset.launchTab)));
+document.querySelector('[data-app-home]')?.addEventListener('click',showMobileLauncher);
+const originalAppNavClickHandlers = document.querySelectorAll('[data-app-tab]');
+originalAppNavClickHandlers.forEach(btn=>btn.addEventListener('click',()=>document.body.classList.remove('mobile-launcher-mode')));
+document.querySelectorAll('.tabs [data-tab]').forEach(tab=>tab.addEventListener('click',()=>{
+  document.body.classList.remove('mobile-launcher-mode');
+  document.querySelectorAll('.app-nav-item').forEach(item=>item.classList.toggle('active',item.dataset.appTab===tab.dataset.tab));
+  if(!['today','checklist','mocks'].includes(tab.dataset.tab)){
+    document.querySelectorAll('.app-nav-item').forEach(item=>item.classList.remove('active'));
+    document.querySelector('[data-app-more]')?.classList.add('active');
+  }
+}));
+function refreshMobileLauncherStats(){
+  const count=document.querySelector('#completedCount')?.textContent||'0';
+  const days=document.querySelector('#daysCount')?.textContent||'1';
+  const progress=document.querySelector('#progressText')?.textContent||'0%';
+  const a=document.querySelector('#mobileTasksDone');if(a)a.textContent=count;
+  const b=document.querySelector('#mobileStudyDays');if(b)b.textContent=days;
+  const d=document.querySelector('#mobileProgress');if(d)d.textContent=progress;
+}
+const mobileLauncherObserver=new MutationObserver(refreshMobileLauncherStats);
+['completedCount','daysCount','progressText'].forEach(id=>{const el=document.getElementById(id);if(el)mobileLauncherObserver.observe(el,{childList:true,subtree:true,characterData:true})});
+refreshMobileLauncherStats();
+if(window.matchMedia('(max-width:640px)').matches)showMobileLauncher();
+window.addEventListener('resize',()=>{if(window.matchMedia('(max-width:640px)').matches && document.body.classList.contains('mobile-launcher-mode'))showMobileLauncher();else if(!window.matchMedia('(max-width:640px)').matches)document.body.classList.remove('mobile-launcher-mode')});
 
 </script></body></html>
