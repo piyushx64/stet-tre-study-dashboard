@@ -29,6 +29,10 @@ if GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET:
 
 def init_db():
     with engine.begin() as conn:
+        if engine.dialect.name == "sqlite":
+            columns = conn.execute(text("PRAGMA table_info(dashboard_state)")).fetchall()
+            if columns and "user_id" not in {row[1] for row in columns}:
+                conn.execute(text("ALTER TABLE dashboard_state RENAME TO dashboard_state_legacy"))
         conn.execute(text("""
             CREATE TABLE IF NOT EXISTS dashboard_state (
                 user_id VARCHAR(320) PRIMARY KEY,
@@ -36,6 +40,16 @@ def init_db():
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """))
+        if engine.dialect.name == "sqlite":
+            legacy_exists = conn.execute(text("SELECT name FROM sqlite_master WHERE type='table' AND name='dashboard_state_legacy'")).fetchone()
+            if legacy_exists:
+                old_row = conn.execute(text("SELECT payload FROM dashboard_state_legacy LIMIT 1")).fetchone()
+                if old_row:
+                    conn.execute(text("""
+                        INSERT OR IGNORE INTO dashboard_state (user_id, payload, updated_at)
+                        VALUES ('legacy-password-user', :payload, CURRENT_TIMESTAMP)
+                    """), {"payload": old_row[0]})
+                conn.execute(text("DROP TABLE dashboard_state_legacy"))
 
 init_db()
 
