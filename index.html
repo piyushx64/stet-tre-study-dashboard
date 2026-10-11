@@ -507,7 +507,7 @@ const otherSkills=[
 function shuffleCopy(arr,seed){const out=arr.slice();let s=seed>>>0;for(let i=out.length-1;i>0;i--){s=(s*1664525+1013904223)>>>0;const j=s%(i+1);[out[i],out[j]]=[out[j],out[i]]}return out}
 function buildFullLengthMocks(){
  const cs=[...stetMiniMocks.flatMap(m=>m.questions),...questionBank.map(q=>[q.q,q.options,q.answer,q.explanation]),...additionalCS];
- const general=otherSkills;
+ const general=otherSkills.slice(0,50);
  const uniqueCS=[];const seen=new Set();for(const q of cs){const k=q[0];if(!seen.has(k)){seen.add(k);uniqueCS.push(q)}}
  const selectedCS=uniqueCS.slice(0,100);
  if(selectedCS.length<100)throw new Error('Full mock CS bank must contain 100 unique questions');
