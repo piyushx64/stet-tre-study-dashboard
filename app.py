@@ -71,9 +71,10 @@ def google_callback():
     verified = user.get("email_verified") is True or user.get("email_verified") == "true"
     if not verified:
         return render_template_string(LOGIN, error="Google did not verify this email address.", google_enabled=True), 403
-    allowed_emails = {item.strip().lower() for item in ALLOWED_GOOGLE_EMAIL.split(",") if item.strip()}
-    if not allowed_emails or email not in allowed_emails:
-        return render_template_string(LOGIN, error="This Google account is not authorised. In Render, set ALLOWED_GOOGLE_EMAIL to the exact Google email you are using, then redeploy.", google_enabled=True), 403
+    # Public Google sign-in: allow any Google account with a verified email.
+    # Only use this for a dashboard intended to be accessible to everyone.
+    if not email:
+        return render_template_string(LOGIN, error="Google did not provide an email address. Try again or use your password.", google_enabled=True), 403
     session.clear()
     session["authenticated"] = True
     session["login_method"] = "google"
