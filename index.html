@@ -103,6 +103,7 @@
 .mobile-launcher{display:none}
 @media(max-width:640px){
   .mobile-launcher{display:block;margin:4px 0 16px}
+  .hero{display:none!important}
   .mobile-welcome{padding:19px 17px;border-radius:22px;background:linear-gradient(135deg,#2446b9,#4169f5);color:#fff;box-shadow:0 10px 24px #315df21e}
   .mobile-welcome .mw-kicker{font-size:10px;letter-spacing:1.3px;font-weight:850;text-transform:uppercase;color:#dbe5ff}
   .mobile-welcome h2{font-size:25px;line-height:1.18;letter-spacing:-.6px;margin:7px 0 7px}
@@ -443,7 +444,7 @@ function showMobileLauncher(){
   document.querySelectorAll('.app-nav-item').forEach(item=>item.classList.toggle('active',item.hasAttribute('data-app-home')));
   document.querySelector('.tabs')?.classList.remove('mobile-more-open');
   const more=document.querySelector('[data-app-more]'); if(more)more.setAttribute('aria-expanded','false');
-  window.scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo({top:0,behavior:'auto'});
 }
 function openMobileFeature(target){
   const tab=document.querySelector('.tabs [data-tab="'+target+'"]');
@@ -457,7 +458,8 @@ function openMobileFeature(target){
     document.querySelectorAll('.app-nav-item').forEach(item=>item.classList.remove('active'));
     document.querySelector('[data-app-more]')?.classList.add('active');
   }
-  window.scrollTo({top:0,behavior:'smooth'});
+  const section=document.getElementById(target);
+  if(section)section.scrollIntoView({behavior:'auto',block:'start'});
 }
 document.querySelectorAll('[data-launch-tab]').forEach(btn=>btn.addEventListener('click',()=>openMobileFeature(btn.dataset.launchTab)));
 document.querySelector('[data-app-home]')?.addEventListener('click',showMobileLauncher);
