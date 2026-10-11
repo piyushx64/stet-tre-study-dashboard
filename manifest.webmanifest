@@ -1,0 +1,30 @@
+{
+  "id": "/",
+  "name": "PrepPath — Bihar STET & BPSC TRE",
+  "short_name": "PrepPath",
+  "description": "Your personal STET and TRE study dashboard, mock tests, notes and revision planner.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f4f7fc",
+  "theme_color": "#315df2",
+  "categories": [
+    "education",
+    "productivity"
+  ],
+  "icons": [
+    {
+      "src": "/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
